@@ -1,0 +1,42 @@
+{
+    "ID": 1,
+    "Title": "年龄问题",
+    "Items": [
+        {
+            "Difficulty": 1,
+            "Question": "小明今年{a}岁，小红今年{b}岁，两人年龄之和是多少？",
+            "Answer": "{a}+{b}",
+            "Input": {
+                "a": "random(6, 15)",
+                "b": "random(6, 15)"
+            },
+            "Tips": "直接将两人年龄相加。",
+            "Solution": {}
+        },
+        {
+            "Difficulty": 2,
+            "Question": "小明今年{a}岁，爸爸今年{b}岁。{c}年后，两人年龄之和是多少？",
+            "Answer": "{a}+{b}+2*{c}",
+            "Input": {
+                "a": "random(8, 14)",
+                "b": "random(30, 45)",
+                "c": "random(1, 10)"
+            },
+            "Tips": "{c}年后每人各增加{c}岁，两人合计增加 2×{c} 岁。",
+            "Solution": {}
+        },
+        {
+            "Difficulty": 3,
+            "Question": "{a}年前，爷爷的年龄是小明的{b}倍；{c}年后，爷爷的年龄是小明的{d}倍。问两人今年各多少岁？",
+            "Answer": "",
+            "Input": {
+                "a": "5",
+                "b": "7",
+                "c": "8",
+                "d": "4"
+            },
+            "Tips": "",
+            "Solution": {}
+        }
+    ]
+}

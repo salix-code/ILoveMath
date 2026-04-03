@@ -38,36 +38,72 @@ body {
 .card {
   background: #fff;
   border-radius: 14px;
-  padding: 1.5rem 1.25rem 1.25rem;
-  width: 200px;
+  padding: 1.75rem 1.5rem 1.5rem;
+  width: 240px;
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  border: 2px solid transparent;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
 .card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.13);
+  border-color: #1a56db;
+  box-shadow: 0 4px 16px rgba(26, 86, 219, 0.15);
 }
 
 .card-title {
-  font-size: 1.1rem;
-  font-weight: 600;
+  font-size: 1.4rem;
+  font-weight: 700;
   text-align: center;
   color: #1a1a2e;
 }
 
 .card-actions {
   display: flex;
+  flex-direction: column;
   gap: 0.5rem;
+}
+
+/* ── Difficulty capsule toggle ───────────────────────── */
+.difficulty-toggle {
+  display: flex;
+  border: 1.5px solid #1a56db;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.diff-btn {
+  flex: 1;
+  padding: 0.35rem 0;
+  border: none;
+  background: transparent;
+  color: #1a56db;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s;
+  line-height: 1;
+}
+
+.diff-btn + .diff-btn {
+  border-left: 1.5px solid #1a56db;
+}
+
+.diff-btn.selected {
+  background: #1a56db;
+  color: #fff;
+}
+
+.diff-btn:hover:not(.selected) {
+  background: #e8f0fe;
 }
 
 /* ── Buttons ─────────────────────────────────────────── */
 .btn {
-  flex: 1;
-  padding: 0.45rem 0;
+  width: 100%;
+  padding: 0.5rem 0;
   border: none;
   border-radius: 7px;
   font-size: 0.875rem;
@@ -109,3 +145,139 @@ body {
 .error {
   color: #c0392b;
 }
+
+/* ── Back link in header ─────────────────────────────── */
+.back-link {
+  color: rgba(255, 255, 255, 0.85);
+  text-decoration: none;
+  font-size: 0.95rem;
+  margin-right: 1rem;
+  vertical-align: middle;
+}
+
+.back-link:hover {
+  color: #fff;
+}
+
+/* ── Question page wrapper ───────────────────────────── */
+.question-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 2.5rem 1.5rem;
+  min-height: calc(100vh - 68px);
+}
+
+/* ── Blackboard ──────────────────────────────────────── */
+.board {
+  background: #fff;
+  border-radius: 18px;
+  border: 1.5px solid #d0d7e3;
+  box-shadow: 0 4px 24px rgba(26, 86, 219, 0.07), inset 0 2px 8px rgba(0, 0, 0, 0.04);
+  width: 100%;
+  max-width: 820px;
+  padding: 2rem 2.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+  color: #1a1a2e;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+/* Section 1 — type label */
+.board__type {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #1a56db;
+  letter-spacing: 0.03em;
+}
+
+/* Section 2 — question content */
+.board__content {
+  font-size: 1.35rem;
+  line-height: 1.9;
+  color: #1a1a2e;
+  min-height: 6rem;
+  white-space: pre-wrap;
+}
+
+.board__content img,
+.board__content svg {
+  max-width: 100%;
+  margin-top: 0.75rem;
+}
+
+/* Section 3 — answer row */
+.board__answer {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.board__answer label {
+  font-size: 1.05rem;
+  color: #555;
+  white-space: nowrap;
+}
+
+.board__answer input {
+  flex: 1;
+  background: #f7f9fc;
+  border: 1.5px solid #c5cfe0;
+  border-radius: 8px;
+  padding: 0.55rem 1rem;
+  font-size: 1.1rem;
+  color: #1a1a2e;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.board__answer input:focus {
+  border-color: #1a56db;
+  box-shadow: 0 0 0 3px rgba(26, 86, 219, 0.12);
+}
+
+.board__answer input::placeholder {
+  color: #aab;
+}
+
+/* Section 4 — action buttons */
+.board__actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.board-btn {
+  padding: 0.6rem 2rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.15s, background 0.15s;
+}
+
+.board-btn:active {
+  opacity: 0.8;
+}
+
+.board-btn--submit {
+  background: #43a047;
+  color: #fff;
+}
+
+.board-btn--submit:hover {
+  background: #388e3c;
+}
+
+.board-btn--solve {
+  background: #fff;
+  color: #1a56db;
+  border: 1.5px solid #1a56db;
+}
+
+.board-btn--solve:hover {
+  background: #e8f0fe;
+}
+

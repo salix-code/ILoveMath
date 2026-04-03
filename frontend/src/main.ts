@@ -33,22 +33,59 @@ function renderCards(problems: ProblemType[]): void {
     card.className = 'card';
     card.innerHTML = `
       <h2 class="card-title">${p.title}</h2>
+      <div class="difficulty-toggle">
+        <button class="diff-btn selected" data-difficulty="1">低</button>
+        <button class="diff-btn" data-difficulty="2">中</button>
+        <button class="diff-btn" data-difficulty="3">高</button>
+      </div>
       <div class="card-actions">
-        <button class="btn btn-primary" data-id="${p.id}" data-action="practice">练习</button>
+        <button class="btn btn-primary" data-id="${p.id}" data-action="start">开始</button>
         <button class="btn btn-secondary" data-id="${p.id}" data-action="print">打印</button>
       </div>
     `;
     grid.appendChild(card);
   }
 
-  // Delegate click handling for both buttons
-  grid.addEventListener('click', (e) => {
-    const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('button[data-action]');
+  // Delegate click handling for difficulty toggle and action buttons
+  grid.addEventListener('click', async (e) => {
+    const target = e.target as HTMLElement;
+
+    // Difficulty capsule: toggle selection within the same card
+    const diffBtn = target.closest<HTMLButtonElement>('.diff-btn');
+    if (diffBtn) {
+      const toggle = diffBtn.closest('.difficulty-toggle')!;
+      toggle.querySelectorAll('.diff-btn').forEach(b => b.classList.remove('selected'));
+      diffBtn.classList.add('selected');
+      return;
+    }
+
+    const btn = target.closest<HTMLButtonElement>('button[data-action]');
     if (!btn) return;
-    const id = btn.dataset['id'];
+    const id = Number(btn.dataset['id']);
     const action = btn.dataset['action'];
-    console.log(`[ILoveMath] action=${action} problem_id=${id}`);
-    // TODO: navigate to practice / print page
+
+    if (action === 'start') {
+      const card = btn.closest('.card')!;
+      const selected = card.querySelector<HTMLButtonElement>('.diff-btn.selected');
+      const difficulty = Number(selected?.dataset['difficulty'] ?? 1);
+      const sessionId = localStorage.getItem(SESSION_KEY) ?? '';
+      const res = await fetch('/api/question/start', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Session-ID': sessionId,
+        },
+        body: JSON.stringify({ id, difficulty }),
+      });
+      if (res.ok) {
+        const data = await res.json() as { redirect: string };
+        window.location.href = data.redirect;
+      } else {
+        console.error('[ILoveMath] start failed', res.status);
+      }
+    } else {
+      console.log(`[ILoveMath] action=${action} problem_id=${id}`);
+    }
   });
 }
 

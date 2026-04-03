@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ILoveMath — 练习</title>
+    <link rel="stylesheet" href="/static/css/style.css" />
+  </head>
+  <body>
+    <div id="app">
+      <header class="site-header">
+        <a href="/" class="back-link">← 返回</a>
+        <h1>I Love Math</h1>
+      </header>
+      <main class="question-wrap">
+        <div id="board" class="board">
+          <!-- 1. Type label -->
+          <div id="q-type-label" class="board__type">加载中…</div>
+
+          <!-- 2. Question content -->
+          <div id="q-content" class="board__content"></div>
+
+          <!-- 3. Answer input -->
+          <div class="board__answer">
+            <label for="q-answer">答案：</label>
+            <input id="q-answer" type="text" placeholder="在此输入答案" autocomplete="off" />
+          </div>
+
+          <!-- 4. Action buttons -->
+          <div class="board__actions">
+            <button id="btn-submit" class="board-btn board-btn--submit">下一题</button>
+            <button id="btn-solve"  class="board-btn board-btn--solve">解答</button>
+          </div>
+        </div>
+      </main>
+    </div>
+    <script src="/static/js/question.js"></script>
+  </body>
+</html>
