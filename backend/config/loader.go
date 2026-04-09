@@ -7,11 +7,17 @@ import (
 	"path/filepath"
 )
 
+// AnswerItem represents a single part of an answer.
+type AnswerItem struct {
+	Text  string `json:"Text"`
+	Value string `json:"Value"`
+}
+
 // ProblemItem represents a single question within a problem set.
 type ProblemItem struct {
 	Difficulty int               `json:"Difficulty"`
 	Question   string            `json:"Question"`
-	Answer     string            `json:"Answer"`
+	Answer     []AnswerItem      `json:"Answer"`
 	Input      map[string]string `json:"Input"` // values are expressions: literals or random(min,max)
 	Tips       string            `json:"Tips"`
 }

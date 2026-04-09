@@ -5,6 +5,7 @@ import (
 	"go/ast"
 	"go/parser"
 	"go/token"
+	"ilovmath/config"
 	"math/rand"
 	"sort"
 	"strconv"
@@ -59,19 +60,34 @@ func substituteQuestion(s string, vars map[string]int) string {
 	return s
 }
 
+// AnswerItemResult represents a single part of an answer with its resolved value.
+type AnswerItemResult struct {
+	Text  string `json:"text"`
+	Value string `json:"value"`
+}
+
 // evalAnswer computes the expected answer string for a question.
 //
 //   - pure arithmetic expression "a + b" or "{a}+{b}" → evaluated integer string
 //   - mixed text template "小明{a}岁，爷爷{b}岁" → token-substituted string
 //   - empty string → "" (open-ended question, not validated)
-func evalAnswer(expr string, vars map[string]int) string {
-	if expr == "" {
-		return ""
+func evalAnswer(items []config.AnswerItem, vars map[string]int) []AnswerItemResult {
+	var results []AnswerItemResult
+	for _, item := range items {
+		val := ""
+		if item.Value == "" {
+			val = ""
+		} else if v, err := evalExpr(item.Value, vars); err == nil {
+			val = strconv.Itoa(v)
+		} else {
+			val = substituteQuestion(item.Value, vars)
+		}
+		results = append(results, AnswerItemResult{
+			Text:  item.Text,
+			Value: val,
+		})
 	}
-	if v, err := evalExpr(expr, vars); err == nil {
-		return strconv.Itoa(v)
-	}
-	return substituteQuestion(expr, vars)
+	return results
 }
 
 // evalExpr evaluates an arithmetic expression string using Go's parser.

@@ -5,6 +5,7 @@ import (
 	"ilovmath/handlers"
 	"ilovmath/math"
 	"log"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 )
@@ -16,6 +17,16 @@ func main() {
 	log.Printf("loaded %d problem type(s) from config/", len(config.ProblemTypes))
 
 	r := gin.Default()
+
+	// Disable browser cache for static files during development.
+	r.Use(func(c *gin.Context) {
+		if strings.HasPrefix(c.Request.URL.Path, "/static/") {
+			c.Header("Cache-Control", "no-cache, no-store, must-revalidate")
+			c.Header("Pragma", "no-cache")
+			c.Header("Expires", "0")
+		}
+		c.Next()
+	})
 
 	// Load all Go HTML templates from the templates/ directory.
 	r.LoadHTMLGlob("templates/*")

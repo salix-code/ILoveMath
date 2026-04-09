@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"math/rand"
 	"net/http"
+	"strconv"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -49,12 +50,13 @@ type nextRequest struct {
 }
 
 type nextResponse struct {
-	GUID      string `json:"guid"`
-	TypeLabel string `json:"type_label"`
-	Content   string `json:"content"`
-	Score     int    `json:"score"`
-	Total     int    `json:"total"`
-	Correct   *bool  `json:"correct,omitempty"` // nil on first question
+	GUID          string `json:"guid"`
+	TypeLabel     string `json:"type_label"`
+	Content       string `json:"content"`
+	Score         int    `json:"score"`
+	Total         int    `json:"total"`
+	QuestionCount int    `json:"question_count"`
+	Correct       *bool  `json:"correct,omitempty"` // nil on first question
 }
 
 var difficultyLabel = map[int]string{1: "低", 2: "中", 3: "高"}
@@ -88,20 +90,20 @@ func NextQuestion(c *gin.Context) {
 	}
 
 	// 2. Collect candidates matching the session difficulty; fall back to any.
-	prob, exists := config.ProblemTypes[ses.ProblemID]
+	question, exists := config.ProblemTypes[ses.ProblemID]
 	if !exists {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "unknown problem type"})
 		return
 	}
 
 	var candidates []config.ProblemItem
-	for _, item := range prob.Items {
+	for _, item := range question.Items {
 		if item.Difficulty == ses.Difficulty {
 			candidates = append(candidates, item)
 		}
 	}
 	if len(candidates) == 0 {
-		candidates = prob.Items
+		candidates = question.Items
 	}
 	if len(candidates) == 0 {
 		c.JSON(http.StatusNotFound, gin.H{"error": "no questions available"})
@@ -119,20 +121,36 @@ func NextQuestion(c *gin.Context) {
 	// Substitute {key} placeholders in the question text.
 	content := substituteQuestion(item.Question, resolved)
 
-	// 4. Compute the expected answer string (arithmetic expr or mixed text).
-	answerStr := evalAnswer(item.Answer, resolved)
+	// 4. Select a single answer item and attach its text.
+	if len(item.Answer) == 0 {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "no answers defined for this question"})
+		return
+	}
+	selectedAnswer := item.Answer[rand.Intn(len(item.Answer))]
+	if selectedAnswer.Text != "" {
+		content = fmt.Sprintf("%s 问题：%s？", content, selectedAnswer.Text)
+	}
+
+	// Compute result for the selected answer.
+	var answerValue string
+	if v, err := evalExpr(selectedAnswer.Value, resolved); err == nil {
+		answerValue = strconv.Itoa(v)
+	} else {
+		answerValue = substituteQuestion(selectedAnswer.Value, resolved)
+	}
 
 	// 5. Record answer + new GUID in session for next-request validation.
 	guid := uuid.NewString()
 	ses.CurrentGUID = guid
-	ses.CurrentAnswer = answerStr
+	ses.CurrentAnswer = answerValue
 
 	c.JSON(http.StatusOK, nextResponse{
-		GUID:      guid,
-		TypeLabel: fmt.Sprintf("%s — 难度：%s", prob.Title, difficultyLabel[ses.Difficulty]),
-		Content:   content,
-		Score:     ses.Score,
-		Total:     ses.Total,
-		Correct:   correct,
+		GUID:          guid,
+		TypeLabel:     fmt.Sprintf("%s — 难度：%s", question.Title, difficultyLabel[ses.Difficulty]),
+		Content:       content,
+		Score:         ses.Score,
+		Total:         ses.Total,
+		QuestionCount: len(question.Items),
+		Correct:       correct,
 	})
 }

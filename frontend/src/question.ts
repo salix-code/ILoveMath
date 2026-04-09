@@ -6,9 +6,28 @@ interface NextResponse {
   guid: string;
   type_label: string;
   content: string;
+  score: number;
+  total: number;
+  question_count: number;
+  correct?: boolean | null;
 }
 
 let currentGUID = '';
+let timerInterval: number | null = null;
+let startTime: number = 0;
+
+function startTimer(): void {
+  const timerEl = document.getElementById('q-timer')!;
+  if (timerInterval) clearInterval(timerInterval);
+  
+  startTime = Date.now();
+  timerInterval = window.setInterval(() => {
+    const elapsed = Math.floor((Date.now() - startTime) / 1000);
+    const mm = Math.floor(elapsed / 60).toString().padStart(2, '0');
+    const ss = (elapsed % 60).toString().padStart(2, '0');
+    timerEl.textContent = `${mm}:${ss}`;
+  }, 1000);
+}
 
 async function fetchNext(prevGUID: string, prevAnswer: string): Promise<NextResponse> {
   const sessionId = localStorage.getItem(SESSION_KEY) ?? '';
@@ -30,8 +49,13 @@ function renderQuestion(data: NextResponse): void {
   const typeLabel = document.getElementById('q-type-label')!;
   const content   = document.getElementById('q-content')!;
   const answerInput = document.getElementById('q-answer') as HTMLInputElement;
+  const scoreEl = document.getElementById('q-score')!;
+  const totalEl = document.getElementById('q-total')!;
 
   typeLabel.textContent = data.type_label;
+  scoreEl.textContent = data.score.toString();
+  totalEl.textContent = data.total.toString();
+
   // Each sentence separated by ；or 。on its own paragraph
   content.innerHTML = data.content
     .replace(/；/g, '；<br>')
@@ -40,6 +64,7 @@ function renderQuestion(data: NextResponse): void {
   answerInput.focus();
 
   currentGUID = data.guid;
+  startTimer();
 }
 
 async function load(prevGUID = '', prevAnswer = ''): Promise<void> {

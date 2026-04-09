@@ -10,7 +10,7 @@ type Config struct {
 	Score         int    // number of correctly answered questions
 	Total         int    // number of questions submitted
 	CurrentGUID   string // GUID of the question currently being answered
-	CurrentAnswer string // expected answer for validation on next request
+	CurrentAnswer string // expected answer for validation on next request (stored as JSON string)
 }
 
 var store sync.Map

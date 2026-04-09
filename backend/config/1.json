@@ -4,19 +4,51 @@
     "Items": [
         {
             "Difficulty": 1,
-            "Question": "小明今年{a}岁，小红今年{b}岁，两人年龄之和是多少？",
-            "Answer": "{a}+{b}",
+            "Question": "丁丁今年{a}岁，爸爸比他大{b}岁，那么当丁丁{c}岁时",
+            "Answer": [
+                {
+                    "text": "爸爸的年龄是多少岁",
+                    "value" : "{a}+{b}"
+                }
+            ],
             "Input": {
-                "a": "random(6, 15)",
-                "b": "random(6, 15)"
+                "a": "random(5,20)",
+                "b": "random(25,35)",
+                "c" : "random(8,12) + a"
             },
-            "Tips": "直接将两人年龄相加。",
+            "Tips": "",
             "Solution": {}
-        },
-        {
+        },{
+            "Difficulty": 1,
+            "Question": "爸爸妈妈现在的年龄和是{a}岁，{b}年后，爸爸比妈妈大{c}岁",
+            "Answer": [
+                {
+                    "text": "今年爸爸多少岁",
+                    "value" : "(a + c) / 2 + b"
+                },{
+                    "text" : "今年妈妈多少岁",
+                    "value":"(a - c) / 2 + b"
+                }
+            ],
+            "Input": {
+                "x": "random(30,50)",
+                "c": "random(1,8)",
+                "y" : "x - c",
+                "a" : "x + y",
+                "b" : "random(5,10)"
+                
+            },
+            "Tips": "",
+            "Solution": {}
+        },{
             "Difficulty": 2,
             "Question": "小明今年{a}岁，爸爸今年{b}岁。{c}年后，两人年龄之和是多少？",
-            "Answer": "{a}+{b}+2*{c}",
+            "Answer": [
+                {
+                    "text": "两人年龄之和",
+                    "value" : "{a} + {b} + 2 * {c}"
+                }
+            ],
             "Input": {
                 "a": "random(8, 14)",
                 "b": "random(30, 45)",
@@ -27,15 +59,24 @@
         },
         {
             "Difficulty": 3,
-            "Question": "{a}年前，小明的年龄是小红的{b}倍；{c}年后，小明的年龄是小红的{d}倍。问两人今年各多少岁？",
-            "Answer": "",
+            "Question": "{a}年前，小明的年龄是小红的{b}倍；{c}年后，小明的年龄是小红的{d}倍。",
+            "Answer": [
+                {
+                    "text": "今年小红多少岁",
+                    "value" : "(a + c) / (k1 - 1) + a"
+                },{
+                    "text": "今年小明多少岁",
+                    "value" : "(a + c) / (k1 - 1) * b + a "
+                }
+            ],
             "Input": {
-                "a": "random(1,k * l - 1)",
-                "b": "random(4,8)",
-                "c": "k * l - a",
-                "d": "random(2,b - 2)",
-                "l" : "b - d",
-                "k" : "random(2,4)"
+                "a": "t - random(1,t - 1)",
+                "b": "(d - 1) * k1 + 1",
+                "c": "t - a",
+                "d": "random(2,4)",
+                "k1": "random(2,4)",
+                "k2": "random(2,4)",
+                "t" : "(k1 - 1) * k2"
             },
             "Tips": "",
             "Solution": {}

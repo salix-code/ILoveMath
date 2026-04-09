@@ -17,6 +17,21 @@ body {
   color: #fff;
   padding: 1.25rem 2rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-stats {
+  font-size: 1.1rem;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.15);
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+}
+
+.header-stats #q-score {
+  color: #a5d6a7;
 }
 
 .site-header h1 {
@@ -164,7 +179,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  padding: 2.5rem 1.5rem;
+  padding: 4rem 1.5rem 2.5rem; /* 增加了顶部边距，防止跟 header 挨得太近 */
   min-height: calc(100vh - 68px);
 }
 
@@ -182,6 +197,21 @@ body {
   gap: 1.75rem;
   color: #1a1a2e;
   font-family: 'Segoe UI', system-ui, sans-serif;
+  position: relative;
+}
+
+.board__timer {
+  position: absolute;
+  top: 1.25rem;
+  right: 2rem;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #1a56db;
+  background: #f0f4f8;
+  padding: 0.3rem 0.8rem;
+  border-radius: 999px;
+  border: 1px solid #d0d7e3;
 }
 
 /* Section 1 — type label */
@@ -205,6 +235,31 @@ body {
 .board__content svg {
   max-width: 100%;
   margin-top: 0.75rem;
+}
+
+/* Feedback message */
+.board__feedback {
+  min-height: 1.5rem;
+  font-weight: 600;
+  text-align: center;
+  border-radius: 6px;
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  display: none; /* Hidden by default */
+}
+
+.board__feedback--correct {
+  display: block;
+  background-color: #e8f5e9;
+  color: #2e7d32;
+  border: 1px solid #c8e6c9;
+}
+
+.board__feedback--wrong {
+  display: block;
+  background-color: #ffebee;
+  color: #c62828;
+  border: 1px solid #ffcdd2;
 }
 
 /* Section 3 — answer row */

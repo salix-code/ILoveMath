@@ -11,15 +11,22 @@
       <header class="site-header">
         <a href="/" class="back-link">← 返回</a>
         <h1>I Love Math</h1>
+        <div id="q-stats" class="header-stats">
+          正确: <span id="q-score">0</span> / 已做: <span id="q-total">0</span>
+        </div>
       </header>
       <main class="question-wrap">
         <div id="board" class="board">
+          <!-- Timer -->
+          <div id="q-timer" class="board__timer">00:00</div>
+
           <!-- 1. Type label -->
           <div id="q-type-label" class="board__type">加载中…</div>
 
           <!-- 2. Question content -->
           <div id="q-content" class="board__content"></div>
 
+        
           <!-- 3. Answer input -->
           <div class="board__answer">
             <label for="q-answer">答案：</label>
