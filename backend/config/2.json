@@ -1,0 +1,46 @@
+{
+    "ID": 2,
+    "Title": "四则运算",
+    "Items": [
+        {
+            "Difficulty": 1,
+            "Question": "如果下面算式成立，",
+            "Answer": [
+                {
+                    "text": "{GenerateExpression (4)}"
+                }
+            ],
+            "Input": {
+               
+            },
+            "Tips": "",
+            "Solution": {}
+        },{
+            "Difficulty": 2,
+            "Question": "如果下面算式成立，",
+            "Answer": [
+                {
+                    "text": "{GenerateExpression(5)}"
+                }
+            ],
+            "Input": {
+               
+            },
+            "Tips": "",
+            "Solution": {}
+        },{
+            "Difficulty": 3,
+            "Question": "如果下面算式成立，",
+            "Answer": [
+                {
+                    "text": "{GenerateExpression(7)}"
+                }
+            ],
+            "Input": {
+               
+            },
+            "Tips": "",
+            "Solution": {}
+        }
+    ]
+}

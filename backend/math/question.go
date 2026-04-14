@@ -61,6 +61,18 @@ type nextResponse struct {
 
 var difficultyLabel = map[int]string{1: "低", 2: "中", 3: "高"}
 
+// textGenerators maps function names (used in Answer.Text as "{FuncName}" or
+// "{FuncName(arg1,arg2)}") to generator functions that return (question content,
+// answer value). The string slice carries any arguments parsed from the call syntax.
+var textGenerators = map[string]func([]string) (string, string){
+	"GenerateExpression": func(args []string) (string, string) {
+		println(strings.Join(args, ", "))
+		eq, answer := GenerateExpression(args...)
+		//println(eq.Equation, eq.AValue)
+		return eq, strconv.Itoa(answer)
+	},
+}
+
 // NextQuestion handles POST /api/question/next.
 func NextQuestion(c *gin.Context) {
 	sessionID := c.GetHeader("X-Session-ID")
@@ -127,13 +139,28 @@ func NextQuestion(c *gin.Context) {
 		return
 	}
 	selectedAnswer := item.Answer[rand.Intn(len(item.Answer))]
+	var generatedAnswer string
 	if selectedAnswer.Text != "" {
-		content = fmt.Sprintf("%s 问题：%s？", content, selectedAnswer.Text)
+		text := selectedAnswer.Text
+		if strings.HasPrefix(text, "{") && strings.HasSuffix(text, "}") {
+			funcCall := text[1 : len(text)-1]
+			funcName, args := parseFuncCall(funcCall)
+			if gen, ok := textGenerators[funcName]; ok {
+				genContent, genAnswer := gen(args)
+				content = fmt.Sprintf("\n%s \n%s", content, genContent)
+				generatedAnswer = genAnswer
+			}
+		} else {
+			answerText := substituteQuestion(selectedAnswer.Text, resolved)
+			content = fmt.Sprintf("%s \n%s？", content, answerText)
+		}
 	}
 
 	// Compute result for the selected answer.
 	var answerValue string
-	if v, err := evalExpr(selectedAnswer.Value, resolved); err == nil {
+	if generatedAnswer != "" {
+		answerValue = generatedAnswer
+	} else if v, err := evalExpr(selectedAnswer.Value, resolved); err == nil {
 		answerValue = strconv.Itoa(v)
 	} else {
 		answerValue = substituteQuestion(selectedAnswer.Value, resolved)
@@ -153,4 +180,25 @@ func NextQuestion(c *gin.Context) {
 		QuestionCount: len(question.Items),
 		Correct:       correct,
 	})
+}
+
+// parseFuncCall parses a string like "FuncName(a, b)" into the function name
+// and a slice of trimmed string arguments. If there are no parentheses the
+// whole string is treated as the function name with no arguments.
+func parseFuncCall(s string) (string, []string) {
+	idx := strings.Index(s, "(")
+	if idx == -1 {
+		return s, nil
+	}
+	funcName := s[:idx]
+	argStr := strings.TrimSuffix(s[idx+1:], ")")
+	if argStr == "" {
+		return funcName, nil
+	}
+	parts := strings.Split(argStr, ",")
+	args := make([]string, len(parts))
+	for i, p := range parts {
+		args[i] = strings.TrimSpace(p)
+	}
+	return funcName, args
 }
