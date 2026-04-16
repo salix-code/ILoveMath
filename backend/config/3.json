@@ -52,6 +52,20 @@
             "Tips": "",
             "Solution": {}
         },{
+            "Difficulty": 2,
+            "Question": "現在時間是{A}點整",
+            "Answer": [
+                {
+                    "text": "等到{B}點整時，時針和分針重疊了幾次？",
+                    "value" : "A - 1"
+                }
+            ],
+            "Input": {
+               "A" : "random(6,12)"
+            },
+            "Tips": "",
+            "Solution": {}
+        },{
             "Difficulty": 3,
             "Question": "現在時間是12點整",
             "Answer": [
