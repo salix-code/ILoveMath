@@ -202,3 +202,7 @@ func parseFuncCall(s string) (string, []string) {
 	}
 	return funcName, args
 }
+
+func ListQuestions(c *gin.Context) {
+
+}

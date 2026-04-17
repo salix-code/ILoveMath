@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>数学练习卷</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #e8e8e8;
+      font-family: "SimSun", "宋体", serif;
+      color: #000;
+    }
+
+    .paper {
+      width: 210mm;
+      min-height: 297mm;
+      margin: 16px auto;
+      background: #fff;
+      padding: 18mm 20mm;
+      box-shadow: 0 0 12px rgba(0,0,0,.25);
+    }
+
+    @page { size: A4; margin: 18mm 20mm; }
+    @media print {
+      body { background: none; }
+      .paper { margin: 0; box-shadow: none; padding: 0; width: 100%; }
+    }
+
+    .title {
+      text-align: center;
+      font-size: 20pt;
+      font-weight: bold;
+      letter-spacing: 6px;
+      margin-bottom: 3mm;
+    }
+    .subtitle {
+      text-align: center;
+      font-size: 10pt;
+      margin-bottom: 6mm;
+      letter-spacing: 2px;
+    }
+
+    .divider {
+      border: none;
+      border-top: 1.5px solid #000;
+      margin-bottom: 6mm;
+    }
+
+    .q-list { list-style: none; }
+    .q-item {
+      margin-bottom: 8mm;
+      font-size: 11pt;
+      line-height: 1.8;
+    }
+    .q-body { display: flex; gap: 6px; align-items: flex-start; }
+    .q-num  { font-weight: bold; white-space: nowrap; min-width: 1.8em; }
+    .q-text { flex: 1; }
+
+    .q-figure { margin: 2mm 0 1mm 1.8em; }
+
+    .answer {
+      display: flex;
+      align-items: flex-end;
+      margin-top: 1.5mm;
+      margin-left: 1.8em;
+      gap: 4px;
+      font-size: 11pt;
+    }
+    .answer-line {
+      flex: 1;
+      border-bottom: 1px solid #000;
+      height: 6mm;
+    }
+  </style>
+</head>
+<script src="/static/js/paper.js"></script>
+<body>
+<div class="paper">
+
+  <h1 class="title">小学数学练习卷</h1>
+
+  <hr class="divider" />
+
+  <ol class="q-list">
+
+    
+
+  </ol>
+
+</div>
+</body>
+</html>

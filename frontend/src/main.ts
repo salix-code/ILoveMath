@@ -64,7 +64,7 @@ function renderCards(problems: ProblemType[]): void {
     const id = Number(btn.dataset['id']);
     const action = btn.dataset['action'];
 
-    if (action === 'start') {
+    if (action === 'start' || action === 'print')  {
       const card = btn.closest('.card')!;
       const selected = card.querySelector<HTMLButtonElement>('.diff-btn.selected');
       const difficulty = Number(selected?.dataset['difficulty'] ?? 1);
@@ -75,7 +75,7 @@ function renderCards(problems: ProblemType[]): void {
           'Content-Type': 'application/json',
           'X-Session-ID': sessionId,
         },
-        body: JSON.stringify({ id, difficulty }),
+        body: JSON.stringify({ id, difficulty,action }),
       });
       if (res.ok) {
         const data = await res.json() as { redirect: string };

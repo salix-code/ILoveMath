@@ -35,6 +35,10 @@ func QuestionPage(c *gin.Context) {
 	c.HTML(http.StatusOK, "question.html", gin.H{})
 }
 
+func PaperPage(c *gin.Context) {
+	c.HTML(http.StatusOK, "paper.html", gin.H{})
+}
+
 // GetList handles GET /api/list.
 // Creates or validates a session and returns all problem types loaded from config.
 func GetList(c *gin.Context) {

@@ -3,9 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build": "esbuild src/main.ts --bundle --outfile=../backend/static/js/main.js && esbuild src/question.ts --bundle --outfile=../backend/static/js/question.js",
-    "build:prod": "esbuild src/main.ts --bundle --minify --outfile=../backend/static/js/main.js && esbuild src/question.ts --bundle --minify --outfile=../backend/static/js/question.js",
-    "watch": "esbuild src/main.ts --bundle --outfile=../backend/static/js/main.js --watch",
+    "build": "esbuild src/main.ts --bundle --outfile=../backend/static/js/main.js && esbuild src/question.ts --bundle --outfile=../backend/static/js/question.js && esbuild src/paper.ts --bundle --outfile=../backend/static/js/paper.js",
+    "build:prod": "esbuild src/main.ts --bundle --minify --outfile=../backend/static/js/main.js && esbuild src/question.ts --bundle --minify --outfile=../backend/static/js/question.js && esbuild src/paper.ts --bundle --minify --outfile=../backend/static/js/paper.js",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

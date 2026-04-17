@@ -4,7 +4,9 @@ import (
 	"ilovmath/config"
 	"ilovmath/handlers"
 	"ilovmath/math"
+	"ilovmath/session"
 	"log"
+	"net/http"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -37,13 +39,46 @@ func main() {
 	// Page routes (rendered by Go templates).
 	r.GET("/", handlers.IndexPage)
 	r.GET("/question", handlers.QuestionPage)
+	r.GET("/paper", handlers.PaperPage)
 
 	// REST API routes.
 	api := r.Group("/api")
 	{
 		api.GET("/list", handlers.GetList)
-		api.POST("/question/start", math.StartQuestion)
+		api.POST("/question/start", func(c *gin.Context) {
+			var req struct {
+				ID         int    `json:"id"         binding:"required"`
+				Difficulty int    `json:"difficulty" binding:"required,min=1,max=3"`
+				Action     string `json:"action"`
+			}
+			if err := c.ShouldBindJSON(&req); err != nil {
+				c.JSON(http.StatusBadRequest, gin.H{"error": "id and difficulty (1-3) are required"})
+				return
+			}
+
+			sessionID := c.GetHeader("X-Session-ID")
+			if sessionID == "" {
+				c.JSON(http.StatusBadRequest, gin.H{"error": "missing session"})
+				return
+			}
+
+			cfg := session.GetOrCreate(sessionID)
+			cfg.ProblemID = req.ID
+			cfg.Difficulty = req.Difficulty
+			cfg.Score = 0
+			cfg.Total = 0
+			cfg.CurrentGUID = ""
+			cfg.CurrentAnswer = ""
+
+			redirect := "/question"
+			if req.Action == "print" {
+				redirect = "/paper"
+			}
+			c.JSON(http.StatusOK, gin.H{"redirect": redirect})
+		})
 		api.POST("/question/next", math.NextQuestion)
+
+		api.GET("/question/list", math.ListQuestions)
 	}
 
 	log.Println("Server listening on http://localhost:8080")
