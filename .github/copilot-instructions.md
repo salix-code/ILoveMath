@@ -74,6 +74,14 @@ frontend/src/*.ts  →(esbuild)→  backend/static/js/main.js
 
 **添加新题型**：在 `backend/config/` 新增 `*.json`，无需改代码。
 
+## UI / Styling
+
+- **CSS 框架**：Tailwind CSS v4 + DaisyUI v5，通过 CDN 引入（`index.html` 和 `question.html`）。
+- **主题**：`data-theme="fantasy"`（在 `<html>` 标签上），可改为其他 DaisyUI 主题（如 `cupcake`、`garden`）。
+- **类名约定**：优先使用 DaisyUI 语义类（`btn btn-primary`、`card`、`badge` 等），自定义样式写在 `frontend/src/style.css`。
+- **打印页**（`paper.html`）：不引入 DaisyUI，保留独立内联 CSS，避免干扰打印排版。
+- **迁移到 npm**：将来只需删除 CDN 标签、`npm install tailwindcss daisyui`、用 Tailwind CLI 编译 CSS，类名无需改动。
+
 ## Conventions
 
 - **Session 存储**：`sync.Map`（内存），服务重启后丢失；`CurrentGUID` 防重放攻击，每题只能提交一次。

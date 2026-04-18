@@ -84,7 +84,7 @@
                 
             ],
             "Input": {
-                "A": "random(5，10)",
+                "A": "random(5, 10)",
                 "M": "random(1,5) * 5",
                 "B": "random(A + 2, 11)",
                 "N": "random(1, 5) * 5"
