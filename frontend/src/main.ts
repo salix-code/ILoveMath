@@ -1,4 +1,5 @@
 const SESSION_KEY = 'ilovmath_session_id';
+const ORDER_KEY = 'ilovmath_order';
 
 interface ProblemType {
   id: number;
@@ -75,7 +76,7 @@ function renderCards(problems: ProblemType[]): void {
           'Content-Type': 'application/json',
           'X-Session-ID': sessionId,
         },
-        body: JSON.stringify({ id, difficulty,action }),
+        body: JSON.stringify({ id, difficulty, action, order: localStorage.getItem(ORDER_KEY) ?? 'random' }),
       });
       if (res.ok) {
         const data = await res.json() as { redirect: string };
@@ -89,7 +90,33 @@ function renderCards(problems: ProblemType[]): void {
   });
 }
 
+function initSettings(): void {
+  const overlay = document.getElementById('settings-overlay')!;
+  const openBtn = document.getElementById('settings-btn')!;
+  const closeBtn = document.getElementById('settings-close')!;
+  const radios = document.querySelectorAll<HTMLInputElement>('input[name="order"]');
+
+  // Restore saved preference (default: random)
+  const saved = localStorage.getItem(ORDER_KEY) ?? 'random';
+  for (const r of radios) {
+    r.checked = r.value === saved;
+  }
+
+  openBtn.addEventListener('click', () => overlay.classList.remove('hidden'));
+  closeBtn.addEventListener('click', () => overlay.classList.add('hidden'));
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) overlay.classList.add('hidden');
+  });
+
+  for (const r of radios) {
+    r.addEventListener('change', () => {
+      if (r.checked) localStorage.setItem(ORDER_KEY, r.value);
+    });
+  }
+}
+
 async function init(): Promise<void> {
+  initSettings();
   try {
     const data = await fetchList();
     localStorage.setItem(SESSION_KEY, data.session_id);

@@ -11,6 +11,7 @@ backend:
 	cd backend && go run .
 
 # Watch TypeScript and recompile on save (run in a separate terminal).
+# NOTE: CSS is maintained directly in backend/static/css/style.css — do NOT edit frontend/src/style.css
 watch:
 	cd frontend && npm run watch
 

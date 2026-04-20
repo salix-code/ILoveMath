@@ -10,11 +10,41 @@
     <div id="app">
       <header class="site-header">
         <h1>I Love Math</h1>
+        <button id="settings-btn" class="settings-btn" title="设置">⚙</button>
       </header>
       <main id="problem-list" class="problem-grid">
         <span class="loading">加载中…</span>
       </main>
     </div>
+
+    <!-- Settings Modal -->
+    <div id="settings-overlay" class="settings-overlay hidden">
+      <div class="settings-modal">
+        <div class="settings-header">
+          <h2 class="settings-title">设置</h2>
+          <button id="settings-close" class="settings-close" title="关闭">✕</button>
+        </div>
+        <div class="settings-body">
+          <div class="settings-row">
+            <div class="settings-row-label">
+              <span class="settings-label">题目顺序</span>
+              <span class="settings-hint">每次练习的出题方式</span>
+            </div>
+            <div class="order-toggle">
+              <label class="order-opt">
+                <input type="radio" name="order" value="sequential" />
+                <span>顺序</span>
+              </label>
+              <label class="order-opt">
+                <input type="radio" name="order" value="random" />
+                <span>随机</span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <script src="/static/js/main.js"></script>
   </body>
 </html>

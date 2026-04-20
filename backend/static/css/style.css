@@ -22,6 +22,12 @@ body {
   align-items: center;
 }
 
+.site-header h1 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
 .header-stats {
   font-size: 1.1rem;
   font-weight: 600;
@@ -32,12 +38,6 @@ body {
 
 .header-stats #q-score {
   color: #a5d6a7;
-}
-
-.site-header h1 {
-  font-size: 1.75rem;
-  font-weight: 700;
-  letter-spacing: 0.01em;
 }
 
 /* ── Problem grid ────────────────────────────────────── */
@@ -336,3 +336,23 @@ body {
   background: #e8f0fe;
 }
 
+
+/* ── Tip hint ────────────────────────────────────────── */
+.board__tip {
+  margin: 0.25rem 0 0.75rem;
+}
+
+.tip-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.3rem 0.75rem;
+  border-radius: 999px;
+  background: #fff9e6;
+  border: 1px solid #fbbf24;
+  color: #92630a;
+  font-size: 0.82rem;
+  font-weight: 500;
+  cursor: default;
+  user-select: none;
+}
