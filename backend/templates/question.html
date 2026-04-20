@@ -28,7 +28,22 @@
           <!-- 2. Question content -->
           <div id="q-content" class="board__content"></div>
 
-        
+          <!-- 2.5 Tip hint -->
+          <div id="q-tip" class="board__tip">
+            <div class="tooltip tooltip-right" data-tip="这里是一个简短的指示">
+              <span class="tip-trigger">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                     fill="none" stroke="currentColor" stroke-width="2"
+                     stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"/>
+                  <line x1="12" y1="16" x2="12" y2="12"/>
+                  <line x1="12" y1="8"  x2="12.01" y2="8"/>
+                </svg>
+                提示
+              </span>
+            </div>
+          </div>
+
           <!-- 3. Answer input -->
           <div class="board__answer">
             <label for="q-answer">答案：</label>

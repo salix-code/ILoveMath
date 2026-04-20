@@ -7,6 +7,8 @@ type Config struct {
 	ID            string
 	ProblemID     int
 	Difficulty    int
+	OrderMode     string // "sequential" or "random" (default "random")
+	QuestionIndex int    // used when OrderMode == "sequential"
 	Score         int    // number of correctly answered questions
 	Total         int    // number of questions submitted
 	CurrentGUID   string // GUID of the question currently being answered

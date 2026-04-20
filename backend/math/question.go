@@ -15,8 +15,9 @@ import (
 )
 
 type startRequest struct {
-	ID         int `json:"id" binding:"required"`
-	Difficulty int `json:"difficulty" binding:"required,min=1,max=3"`
+	ID         int    `json:"id" binding:"required"`
+	Difficulty int    `json:"difficulty" binding:"required,min=1,max=3"`
+	Order      string `json:"order"`
 }
 
 // StartQuestion handles POST /api/question/start.
@@ -36,6 +37,12 @@ func StartQuestion(c *gin.Context) {
 	cfg := session.GetOrCreate(sessionID)
 	cfg.ProblemID = req.ID
 	cfg.Difficulty = req.Difficulty
+	if req.Order == "sequential" {
+		cfg.OrderMode = "sequential"
+	} else {
+		cfg.OrderMode = "random"
+	}
+	cfg.QuestionIndex = 0
 	cfg.Score = 0
 	cfg.Total = 0
 	cfg.CurrentGUID = ""
@@ -121,7 +128,13 @@ func NextQuestion(c *gin.Context) {
 		c.JSON(http.StatusNotFound, gin.H{"error": "no questions available"})
 		return
 	}
-	item := candidates[rand.Intn(len(candidates))]
+	var item config.ProblemItem
+	if ses.OrderMode == "sequential" {
+		item = candidates[ses.QuestionIndex%len(candidates)]
+		ses.QuestionIndex++
+	} else {
+		item = candidates[rand.Intn(len(candidates))]
+	}
 
 	// 3. Evaluate Input expressions → concrete integer map.
 	resolved, err := resolveInput(item.Input)
